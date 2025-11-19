@@ -1,1 +1,104 @@
+pedidos = []
+
+
+def registrar_pedido():
+    print("\n --- REGISTRAR NUEVO PEDIDO ---")
+    cliente = input("Nombre del cliente: ")
+    prenda = input("Tipo de prenda (vestido, camisa, pantalón, etc.): ")
+    tela = input("Tipo de tela: ")
+    fecha_registro = input("Fecha de registro (dd/mm/aaaa): ")
+    fecha_entrega = input("Fecha de entrega (dd/mm/aaaa): ")
+
+    pedido = {
+        "cliente": cliente,
+        "prenda": prenda,
+        "tela": tela,
+        "fecha_entrega": fecha_entrega,
+        "fecha_registro": fecha_registro,
+        "estado": "En confección"
+    }
+
+    pedidos.append(pedido)
+    print(" Pedido registrado exitosamente.")
+
+
+def ver_pedidos():
+    print("\n --- LISTA DE PEDIDOS ---")
+    if not pedidos:
+        print("No hay pedidos registrados.")
+    else:
+        for i, p in enumerate(pedidos, start=1):
+            print(f"{i}. Cliente: {p['cliente']} | Prenda: {p['prenda']} | Tela: {p['tela']} | "
+                  f"Estado: {p['estado']} | Entrega: {p['fecha_entrega']} | Registro: {p['fecha_registro']}")
+
+
+def buscar_pedido():
+    print("\n --- BUSCAR PEDIDO POR CLIENTE ---")
+    nombre = input("Ingrese el nombre del cliente: ")
+    encontrados = [p for p in pedidos if p["cliente"].lower() == nombre.lower()]
+
+    if encontrados:
+        print(f"\nPedidos del cliente {nombre}:")
+        for p in encontrados:
+            print(f"- {p['prenda']} ({p['tela']}) | Estado: {p['estado']} | Entrega: {p['fecha_entrega']}")
+    else:
+        print(" No se encontraron pedidos para ese cliente.")
+
+
+def cambiar_estado_pedido():
+    print("\n --- ACTUALIZAR ESTADO DE PEDIDO ---")
+    nombre = input("Ingrese el nombre del cliente: ")
+    for p in pedidos:
+        if p["cliente"].lower() == nombre.lower():
+            print(f"Pedido encontrado: {p['prenda']} ({p['estado']})")
+            nuevo_estado = input("Nuevo estado (En costura / Plancha / Entregado): ")
+            p["estado"] = nuevo_estado
+            print(" Estado actualizado correctamente.")
+            return
+    print(" Pedido no encontrado.")
+
+
+def eliminar_pedido():
+    print("\n--- ELIMINAR PEDIDO ---")
+    nombre = input("Ingrese el nombre del cliente: ")
+    for p in pedidos:
+        if p["cliente"].lower() == nombre.lower():
+            pedidos.remove(p)
+            print(" Pedido eliminado exitosamente.")
+            return
+    print(" No se encontró un pedido con ese nombre.")
+
+
+
+def menu_historial_pedidos():
+    while True:
+        print("\n===== MÓDULO: HISTORIAL DE PEDIDOS =====")
+        print("1. Registrar nuevo pedido")
+        print("2. Ver todos los pedidos")
+        print("3. Buscar pedido por cliente")
+        print("4. Cambiar estado de pedido")
+        print("5. Eliminar pedido")
+        print("6. Salir")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            registrar_pedido()
+        elif opcion == "2":
+            ver_pedidos()
+        elif opcion == "3":
+            buscar_pedido()
+        elif opcion == "4":
+            cambiar_estado_pedido()
+        elif opcion == "5":
+            eliminar_pedido()
+        elif opcion == "6":
+            print(" Saliendo del módulo de historial de pedidos...")
+            break
+        else:
+            print(" Opción no válida.")
+
+
+if __name__ == "__main__":
+    print(" Bienvenido al sistema de Costurería - Historial de Pedidos")
+    menu_historial_pedidos()
 
