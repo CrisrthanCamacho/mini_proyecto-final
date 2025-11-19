@@ -1,1 +1,491 @@
+empleados = []
+servicios = []
+pedidos = []
+usuarios = []
+pagos = []
+usuario_activo = None   # Para manejar el perfil
+
+
+def crear_perfil():
+    print("\n--- CREAR PERFIL ---")
+    username = input("Nombre de usuario: ").strip()
+    password = input("Contraseña: ").strip()
+    rol = input("Rol (administrador / empleado): ").strip()
+
+    usuarios.append({"username": username, "password": password, "rol": rol})
+    print("Perfil creado correctamente.")
+
+
+def escoger_perfil():
+    global usuario_activo
+    print("\n--- SELECCIONAR PERFIL ---")
+    if not usuarios:
+        print("No hay perfiles creados. Crea uno primero.")
+        return
+
+    for i, u in enumerate(usuarios, start=1):
+        print(f"{i}. {u['username']} | Rol: {u['rol']}")
+
+    seleccion = int(input("Seleccione el número del perfil: "))
+
+    if 1 <= seleccion <= len(usuarios):
+        usuario_activo = usuarios[seleccion - 1]
+        print(f"Perfil iniciado correctamente. Bienvenido {usuario_activo['username']}.")
+    else:
+        print("Opción inválida.")
+
+
+def ver_perfil():
+    if not usuario_activo:
+        print("\nNo hay un perfil seleccionado.")
+    else:
+        print("\n--- PERFIL ACTIVO ---")
+        print(f"Usuario: {usuario_activo['username']}")
+        print(f"Rol: {usuario_activo['rol']}")
+
+
+def cambiar_contraseña():
+    global usuario_activo
+
+    if not usuario_activo:
+        print("Debe seleccionar un perfil primero.")
+        return
+
+    actual = input("Contraseña actual: ")
+    if actual != usuario_activo["password"]:
+        print("Contraseña incorrecta.")
+        return
+
+    nueva = input("Nueva contraseña: ")
+    usuario_activo["password"] = nueva
+    print("Contraseña actualizada correctamente.")
+
+
+def menu_perfil_usuario():
+    while True:
+        print("\n===== PERFIL DE USUARIO =====")
+        print("1. Crear perfil")
+        print("2. Seleccionar perfil")
+        print("3. Ver perfil activo")
+        print("4. Cambiar contraseña")
+        print("5. Volver al menú principal")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1": crear_perfil()
+        elif opcion == "2": escoger_perfil()
+        elif opcion == "3": ver_perfil()
+        elif opcion == "4": cambiar_contraseña()
+        elif opcion == "5": break
+        else:
+            print("Opción no válida.")
+
+
+
+def registrar_usuario():
+    print("\n--- REGISTRAR NUEVO USUARIO ---")
+    username = input("Nombre de usuario: ").strip()
+    password = input("Contraseña: ").strip()
+    rol = input("Rol (administrador / empleado): ").strip()
+
+    usuarios.append({"username": username, "password": password, "rol": rol})
+    print("Usuario registrado correctamente.")
+
+
+def ver_usuarios():
+    print("\n--- LISTA DE USUARIOS ---")
+    if not usuarios:
+        print("No hay usuarios registrados.")
+    else:
+        for i, u in enumerate(usuarios, start=1):
+            print(f"{i}. Usuario: {u['username']} | Rol: {u['rol']}")
+
+
+def eliminar_usuario():
+    print("\n--- ELIMINAR USUARIO ---")
+    username = input("Usuario a eliminar: ").strip()
+    for u in usuarios:
+        if u["username"] == username:
+            usuarios.remove(u)
+            print("Usuario eliminado correctamente.")
+            return
+    print("No se encontró ese usuario.")
+
+
+def login():
+    global usuario_activo
+    print("\n--- INICIAR SESIÓN ---")
+    username = input("Usuario: ").strip()
+    password = input("Contraseña: ").strip()
+
+    for u in usuarios:
+        if u["username"] == username and u["password"] == password:
+            usuario_activo = u
+            print(f"Sesión iniciada correctamente. Bienvenido {username}.")
+            return
+
+    print("Usuario o contraseña incorrectos.")
+
+
+def menu_gestion_usuarios():
+    while True:
+        print("\n===== MÓDULO DE USUARIOS =====")
+        print("1. Registrar usuario")
+        print("2. Ver usuarios")
+        print("3. Eliminar usuario")
+        print("4. Iniciar sesión")
+        print("5. Volver al menú principal")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1": registrar_usuario()
+        elif opcion == "2": ver_usuarios()
+        elif opcion == "3": eliminar_usuario()
+        elif opcion == "4": login()
+        elif opcion == "5": break
+        else:
+            print("Opción no válida.")
+
+
+
+
+def registrar_empleado():
+    print("\n--- REGISTRAR EMPLEADO ---")
+    nombre = input("Nombre: ")
+    cargo = input("Cargo: ")
+    salario = input("Salario: ")
+    empleados.append({"nombre": nombre, "cargo": cargo, "salario": salario})
+    print("Empleado registrado.")
+
+
+def ver_empleados():
+    print("\n--- EMPLEADOS ---")
+    if not empleados:
+        print("No hay empleados.")
+    else:
+        for i, e in enumerate(empleados, start=1):
+            print(f"{i}. {e['nombre']} | Cargo: {e['cargo']} | Salario: {e['salario']}")
+
+
+def eliminar_empleado():
+    print("\n--- ELIMINAR EMPLEADO ---")
+    nombre = input("Nombre del empleado: ").strip()
+    for e in empleados:
+        if e["nombre"].lower() == nombre.lower():
+            empleados.remove(e)
+            print("Empleado eliminado.")
+            return
+    print("No se encontró ese empleado.")
+
+
+def registrar_servicio():
+    print("\n--- REGISTRAR SERVICIO ---")
+    nombre = input("Servicio: ")
+    precio = input("Precio: ")
+    duracion = input("Duración: ")
+    servicios.append({"nombre": nombre, "precio": precio, "duracion": duracion})
+    print("Servicio registrado.")
+
+
+def ver_servicios():
+    print("\n--- SERVICIOS ---")
+    if not servicios:
+        print("No hay servicios.")
+    else:
+        for i, s in enumerate(servicios, start=1):
+            print(f"{i}. {s['nombre']} | Precio: {s['precio']} | Duración: {s['duracion']}h")
+
+
+def eliminar_servicio():
+    print("\n--- ELIMINAR SERVICIO ---")
+    nombre = input("Servicio a eliminar: ").strip()
+    for s in servicios:
+        if s["nombre"].lower() == nombre.lower():
+            servicios.remove(s)
+            print("Servicio eliminado.")
+            return
+    print("No se encontró ese servicio.")
+
+
+def menu_administracion():
+    while True:
+        print("\n===== ADMINISTRACIÓN =====")
+        print("1. Registrar empleado")
+        print("2. Ver empleados")
+        print("3. Eliminar empleado")
+        print("4. Registrar servicio")
+        print("5. Ver servicios")
+        print("6. Eliminar servicio")
+        print("7. Volver al menú principal")
+        opcion = input("Seleccione: ")
+
+        if opcion == "1": registrar_empleado()
+        elif opcion == "2": ver_empleados()
+        elif opcion == "3": eliminar_empleado()
+        elif opcion == "4": registrar_servicio()
+        elif opcion == "5": ver_servicios()
+        elif opcion == "6": eliminar_servicio()
+        elif opcion == "7": break
+        else:
+            print("Opción no válida.")
+
+
+
+def registrar_pedido():
+    print("\n--- REGISTRAR PEDIDO ---")
+    cliente = input("Cliente: ")
+    prenda = input("Prenda: ")
+    tela = input("Tela: ")
+    fecha_registro = input("Fecha de registro: ")
+    fecha_entrega = input("Fecha de entrega: ")
+
+    pedidos.append({
+        "cliente": cliente,
+        "prenda": prenda,
+        "tela": tela,
+        "fecha_registro": fecha_registro,
+        "fecha_entrega": fecha_entrega,
+        "estado": "En confección"
+    })
+
+    print("Pedido registrado correctamente.")
+
+
+def ver_pedidos():
+    print("\n--- PEDIDOS REGISTRADOS ---")
+    if not pedidos:
+        print("No hay pedidos registrados.")
+    else:
+        for i, p in enumerate(pedidos, start=1):
+            print(f"{i}. Cliente: {p['cliente']} | Prenda: {p['prenda']} | Estado: {p['estado']}")
+
+
+def menu_gestion_pedidos():
+    while True:
+        print("\n===== GESTIÓN DE PEDIDOS =====")
+        print("1. Registrar pedido")
+        print("2. Ver pedidos")
+        print("3. Volver al menú principal")
+        opcion = input("Seleccione: ")
+
+        if opcion == "1": registrar_pedido()
+        elif opcion == "2": ver_pedidos()
+        elif opcion == "3": break
+        else: 
+            print("Opción no válida.")
+
+
+
+def ver_historial_pedidos():
+    print("\n===== HISTORIAL COMPLETO DE PEDIDOS =====")
+    if not pedidos:
+        print("No hay pedidos registrados.")
+    else:
+        for i, p in enumerate(pedidos, start=1):
+            print(f"""
+--- Pedido #{i} ---
+Cliente: {p['cliente']}
+Prenda: {p['prenda']}
+Tela: {p['tela']}
+Fecha de registro: {p['fecha_registro']}
+Fecha de entrega: {p['fecha_entrega']}
+Estado: {p['estado']}
+""")
+
+
+def buscar_pedido_cliente():
+    print("\n--- BUSCAR POR CLIENTE ---")
+    busqueda = input("Nombre del cliente: ").strip()
+
+    encontrados = [p for p in pedidos if p["cliente"].lower() == busqueda.lower()]
+
+    if not encontrados:
+        print("No se encontraron pedidos para ese cliente.")
+    else:
+        for p in encontrados:
+            print(f"Cliente: {p['cliente']} | Prenda: {p['prenda']} | Estado: {p['estado']}")
+
+
+def buscar_pedido_fecha():
+    print("\n--- BUSCAR POR FECHA DE REGISTRO ---")
+    fecha = input("Ingrese la fecha (Ej: 2025-11-18): ").strip()
+
+    encontrados = [p for p in pedidos if p["fecha_registro"] == fecha]
+
+    if not encontrados:
+        print("No hay pedidos en esa fecha.")
+    else:
+        for p in encontrados:
+            print(f"Cliente: {p['cliente']} | Prenda: {p['prenda']} | Entrega: {p['fecha_entrega']}")
+
+
+def actualizar_estado_pedido():
+    print("\n--- ACTUALIZAR ESTADO DEL PEDIDO ---")
+    ver_pedidos()
+
+    if not pedidos:
+        return
+
+    num = int(input("Número del pedido: "))
+
+    if 1 <= num <= len(pedidos):
+        print("Estados disponibles:")
+        print("1. En confección")
+        print("2. Terminado")
+        print("3. Entregado")
+
+        opcion = input("Seleccione el nuevo estado: ")
+
+        if opcion == "1":
+            pedidos[num - 1]["estado"] = "En confección"
+        elif opcion == "2":
+            pedidos[num - 1]["estado"] = "Terminado"
+        elif opcion == "3":
+            pedidos[num - 1]["estado"] = "Entregado"
+        else:
+            print("Estado no válido.")
+            return
+
+        print("Estado actualizado correctamente.")
+    else:
+        print("Número de pedido inválido.")
+
+
+def eliminar_pedido():
+    print("\n--- ELIMINAR PEDIDO ---")
+    ver_pedidos()
+
+    if not pedidos:
+        return
+
+    num = int(input("Número del pedido a eliminar: "))
+
+    if 1 <= num <= len(pedidos):
+        pedidos.pop(num - 1)
+        print("Pedido eliminado correctamente.")
+    else:
+        print("Número inválido.")
+
+
+def menu_historial_pedidos():
+    while True:
+        print("\n===== HISTORIAL DE PEDIDOS =====")
+        print("1. Ver historial completo")
+        print("2. Buscar por cliente")
+        print("3. Buscar por fecha")
+        print("4. Actualizar estado")
+        print("5. Eliminar pedido")
+        print("6. Volver al menú principal")
+        opcion = input("Seleccione: ")
+
+        if opcion == "1": ver_historial_pedidos()
+        elif opcion == "2": buscar_pedido_cliente()
+        elif opcion == "3": buscar_pedido_fecha()
+        elif opcion == "4": actualizar_estado_pedido()
+        elif opcion == "5": eliminar_pedido()
+        elif opcion == "6": break
+        else:
+            print("Opción no válida.")
+
+
+
+
+def registrar_pago():
+    print("\n--- REGISTRO DE PAGO ---")
+    cliente = input("Cliente: ")
+    monto = input("Monto: ")
+    fecha = input("Fecha: ")
+
+    pagos.append({"cliente": cliente, "monto": monto, "fecha": fecha})
+    print("Pago registrado correctamente.")
+
+
+def ver_pagos():
+    print("\n--- HISTORIAL DE PAGOS ---")
+    if not pagos:
+        print("No hay pagos registrados.")
+    else:
+        for i, p in enumerate(pagos, start=1):
+            print(f"{i}. Cliente: {p['cliente']} | Monto: ${p['monto']} | Fecha: {p['fecha']}")
+
+
+def eliminar_pago():
+    print("\n--- ELIMINAR PAGO ---")
+    ver_pagos()
+
+    if not pagos:
+        return
+
+    num = int(input("Número del pago a eliminar: "))
+
+    if 1 <= num <= len(pagos):
+        pagos.pop(num - 1)
+        print("Pago eliminado correctamente.")
+    else:
+        print("Número inválido.")
+
+
+def buscar_pago_cliente():
+    print("\n--- BUSCAR PAGO POR CLIENTE ---")
+    nombre = input("Nombre del cliente: ").strip()
+
+    encontrados = [p for p in pagos if p["cliente"].lower() == nombre.lower()]
+
+    if not encontrados:
+        print("No hay pagos registrados para ese cliente.")
+    else:
+        for p in encontrados:
+            print(f"Cliente: {p['cliente']} | Monto: ${p['monto']} | Fecha: {p['fecha']}")
+
+
+def menu_pagos():
+    while True:
+        print("\n===== PAGOS =====")
+        print("1. Registrar pago")
+        print("2. Ver historial de pagos")
+        print("3. Buscar pago por cliente")
+        print("4. Eliminar pago")
+        print("5. Volver al menú principal")
+
+        opcion = input("Seleccione: ")
+
+        if opcion == "1": registrar_pago()
+        elif opcion == "2": ver_pagos()
+        elif opcion == "3": buscar_pago_cliente()
+        elif opcion == "4": eliminar_pago()
+        elif opcion == "5": break
+        else:
+            print("Opción no válida.")
+
+
+
+
+def menu_principal():
+    while True:
+        print("\n========== SISTEMA GENERAL DE COSTURERÍA ==========")
+        print("1. Perfil de usuario")
+        print("2. Gestión de usuarios")
+        print("3. Gestión de pedidos")
+        print("4. Administración")
+        print("5. Pagos")
+        print("6. Historial de pedidos")
+        print("7. Salir")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1": menu_perfil_usuario()
+        elif opcion == "2": menu_gestion_usuarios()
+        elif opcion == "3": menu_gestion_pedidos()
+        elif opcion == "4": menu_administracion()
+        elif opcion == "5": menu_pagos()
+        elif opcion == "6": menu_historial_pedidos()
+        elif opcion == "7":
+            print("Saliendo del sistema...")
+            break
+        else:
+            print("Opción no válida.")
+
+
+
+
+if __name__ == "__main__":
+    print("\nBienvenido al SISTEMA CENTRAL DE COSTURERÍA")
+    menu_principal()
 
