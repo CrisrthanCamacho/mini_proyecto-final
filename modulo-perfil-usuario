@@ -1,1 +1,41 @@
+class usuario:
+    def _init_(self,nombre,edad,correo,telefono):
+        self.nombre=nombre
+        self.edad=edad
+        self.correo=correo
+        self.telefono=telefono
+        self.pedidos=[] 
+    
+    def agregar_pedido(self,prenda,talla,color,fecha_entrega, estado="en proceso"):
+        pedidos={
+            "prenda": prenda,
+            "talla": talla,
+            "color": color,
+            "fecha_entrega": fecha_entrega,
+            "estado": estado
+        }
+        self.pedidos.append(pedidos)
+        print("Pedido agregado exitosamente.")
 
+    def mostrar_pedidos(self):
+        print(f"\n pedidos registrados:")
+        if not self.pedidos:
+            print("No hay pedidos registrados.")
+        else:
+            for i, pedido in enumerate(self.pedidos, 1):
+                print(f"Pedido {i}:")
+                print(f"  Prenda: {pedido['prenda']}")
+                print(f"  Talla: {pedido['talla']}")
+                print(f"  Color: {pedido['color']}")        
+                print(f"  Fecha de entrega: {pedido['fecha_entrega']}")
+                print(f"  Estado: {pedido['estado']}\n")
+    def mostrar_perfil(self):
+        print("------------------------")
+        print(" PERFIL DE USUARIO - COSTURERIA")
+        print("------------------------")
+        print("nombre{self.nombre}")
+        print("edad{self.edad}")
+        print("correo{self.correo}")
+        print("telefono{self.telefono}")
+        print("------------------------")
+        print("total de pedidos:", len(self.pedidos))
