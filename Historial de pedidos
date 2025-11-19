@@ -1,6 +1,5 @@
 pedidos = []
 
-
 def registrar_pedido():
     print("\n --- REGISTRAR NUEVO PEDIDO ---")
     cliente = input("Nombre del cliente: ")
