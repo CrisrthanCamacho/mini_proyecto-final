@@ -1,8 +1,6 @@
 empleados = []
 servicios = []
 
-
-
 def registrar_empleado():
     print("\n --- REGISTRAR NUEVO EMPLEADO ---")
     nombre = input("Nombre del empleado: ")
